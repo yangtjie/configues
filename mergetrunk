@@ -1,0 +1,32 @@
+#!/bin/bash
+##merge trunk
+##Author:tongjie.yang
+
+trunk_url=`svn info | grep URL | sed 's/branches.*/trunk/' | awk '{print $2}'`
+
+while :
+do 
+if read -p "Do you want to merge trunk? [Y/N]:"
+	then 
+		case $REPLY in 
+			N|n)
+				echo -e '\n mergetrunk Interrupt.';
+				merge_flag=0;
+				break;;
+		    Y|y)
+				echo -e '\n start to merge...';
+				merge_flag=1;
+				break;;
+			*)
+				echo -e '\n error input';
+				continue
+		esac
+fi
+done
+
+if [ $merge_flag == 1 ]
+then
+##merge
+svn up && svn merge $trunk_url
+fi
+
